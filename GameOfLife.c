@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define TAM 3
 
-/* Starts a square matrix and returns the pointer to it */
+#define NO_CHAR 46 //'.'
+#define YES_CHAR 35 //'#'
+#define TAM 20
+#define DELAY 100000000
+
+/* Starts a square matrix and returns its pointer */
 int ** startMatrix (int size)
 {
 	int ** matrix = malloc (sizeof (int *) * size);
@@ -24,16 +28,15 @@ void readBoard (int **M, int size)
 {
 	for (int i = 0; i < size; i++)
 		for (int j = 0; j < size; j++)
-			scanf ("%d", &M[i][j]);
+			scanf ("%c ", &M[i][j]);
 }
 
 /* Prints out a Matrix */
 void printBoard (int **M, int size)
 {
 	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
-			printf ("%d  ", M[i][j]);
-		}
+		for (int j = 0; j < size; j++)
+			printf ("%c  ", M[i][j]);
 		printf ("\n");
 	}
 }
@@ -42,7 +45,7 @@ void printBoard (int **M, int size)
  * sure not to iterate out of Matrix bounds    */
 int defStart (int x)
 {
-	if (!x) return 0;
+	if (!x) return x;
 	else return x-1;
 }
 
@@ -58,15 +61,17 @@ int n_around (int **Board, int i, int j, int size)
 {
 	int startLine, startCol, endLine, endCol, around = 0;
 	
-	startLine = defStart (i);
-	startCol = defStart (j);
-	endLine = defEnd (i, size);
-	endCol = defEnd (j, size);
+	startLine = defStart(i);
+	startCol = defStart(j);
+	endLine = defEnd(i, size);
+	endCol = defEnd(j, size);
 	
 	for (int k = startLine; k <= endLine; k++)
 		for (int l = startCol; l <= endCol; l++)
-			if (!(k==i && l==j))
-				around += Board[k][l];
+			if (!(k==i && l==j)) { 
+				//around += Board[k][l];
+				if (Board[k][l] == '#') around++;
+			}
 	
 	return around;
 }
@@ -77,14 +82,14 @@ void fillAround (int **Around, int **Board, int size)
 {
 	for (int i = 0; i < size; i ++)
 		for (int j = 0; j < size; j++)
-			Around[i][j] = n_around (Board, i, j, size);
+			Around[i][j] = n_around(Board, i, j, size);
 }
 
 void fillNewBoard (int **Board, int **NewBoard, int **Around, int size)
 {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
-			if (Around[i][j] == 3) NewBoard[i][j] = 1;
+			if (Around[i][j] == 3) NewBoard[i][j] = YES_CHAR;
 			if (Around[i][j] == 2) NewBoard[i][j] = Board[i][j];
 		}
 	}
@@ -94,7 +99,7 @@ void fillNewBoard (int **Board, int **NewBoard, int **Around, int size)
 void refreshBoard (int ***Board, int ***NewBoard, int size)
 {
 	//Working, even with warning
-	int ***aux;
+	int **aux;
 	aux = *Board;
 	*Board = *NewBoard;
 	*NewBoard = aux;
@@ -103,9 +108,9 @@ void refreshBoard (int ***Board, int ***NewBoard, int size)
 
 int main ()
 {
-	int **Board = startMatrix (TAM);
-	int **Around = startMatrix (TAM);
-	int **NewBoard = startMatrix (TAM);
+	int **Board = startMatrix(TAM);
+	int **Around = startMatrix(TAM);
+	int **NewBoard = startMatrix(TAM);
 		
 	readBoard (Board, TAM);
 	
@@ -113,14 +118,14 @@ int main ()
 	printBoard (Board, TAM);
 	
 	for (int i = 2; ; i++) {
-		for (int k = 0; k < 200000000; k++);			//Lock to better view
-		fillBoard (NewBoard, TAM, 0);
-		fillAround (Around, Board, TAM);
-		fillNewBoard (Board, NewBoard, Around, TAM);
-		system ("clear");
-		printf ("\n=== GEN %d ===\n", i);
-		printBoard (NewBoard, TAM);
-		refreshBoard (&Board, &NewBoard, TAM);
+		for (int pause = 0; pause < DELAY; pause++); //Lock to better view
+		fillBoard(NewBoard, TAM, NO_CHAR);
+		fillAround(Around, Board, TAM);
+		fillNewBoard(Board, NewBoard, Around, TAM);
+		system("clear");
+		printf("\n=== GEN %d ===\n", i);
+		printBoard(NewBoard, TAM);
+		refreshBoard(&Board, &NewBoard, TAM);
 	}
 	
 	return 0;
