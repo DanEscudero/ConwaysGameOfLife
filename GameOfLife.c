@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NO_CHAR 46 //'.'
-#define YES_CHAR 35 //'#'
+#define NO_CHAR 46 //.
+#define YES_CHAR 35 //#
 #define TAM 20
 #define DELAY 100000000
 
