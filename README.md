@@ -6,17 +6,17 @@ entrada.in is a good example to show the game running.
 
 Test with:
 
-  **gcc -o GameOfLife.c GameOfLife**
+	**gcc -o GameOfLife.c GameOfLife**
 
-  **./GameOfLife <entrada.in**
+	**./GameOfLife <entrada.in**
 
 
 * Default Stats:
 
-  * Default Delay: 100000000
+	* Default Delay: 100000000
 
-  * Default YES_CHAR: '#' (35 on ASCII)
+	* Default YES_CHAR: '#' (35 on ASCII)
 
-  * Default NO_CHAR '.' (46 on ASCII)
+	* Default NO_CHAR '.' (46 on ASCII)
 
-  * Default Size (TAM): 20
+	* Default Size (TAM): 20
