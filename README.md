@@ -1,7 +1,15 @@
 # ConwaysGameOfLife
 
 Simulation Of Conway's Game Of life, to run on terminal.
+
 entrada.in is a good example to show the game running.
+
+Test with:
+
+**gcc -o GameOfLife.c GameOfLife**
+
+**./GameOfLife <entrada.in**
+
 
 * Default Stats:
 
